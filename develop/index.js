@@ -66,7 +66,7 @@ async function startGenerator() {
     try {
         const answers = await inquirer.prompt(promptQuestions);
         const readmeContent = generateReadme(answers);
-        generateReadmeFile("./dist/README.md", readmeContent);
+        generateReadmeFile("./output/readme.md", readmeContent);
     } catch (error) {
         console.error("An error occurred during README generation: ", error);
     }
