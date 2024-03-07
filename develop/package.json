@@ -1,0 +1,6 @@
+{
+    "name": "readme-generator",
+    "dependencies": {
+      "inquirer": "^8.2.4"
+    }
+  }
