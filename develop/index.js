@@ -1,75 +1,33 @@
-const http = require("http");
-const fs = require("fs");
-const inquirer = require("inquirer");
-const util = require("util");
-const generateReadme = require("./utils/generateMarkdown");
+// ReadmeGenerator.js
 
-const promptQuestions = [
-    {
-        name: "projectTitle",
-        type: "input",
-        message: "Enter your project's title:"
-    },
-    {
-        name: "projectDescription",
-        type: "input",
-        message: "Provide a brief description of your project:"
-    },
-    {
-        name: "installInstructions",
-        type: "input",
-        message: "How can your project be installed? Please provide steps:"
-    },
-    {
-        name: "usageInfo",
-        type: "input",
-        message: "How is your project used? Provide instructions:"
-    },
-    {
-        name: "contributionGuidelines",
-        type: "input",
-        message: "How can others contribute to your project?"
-    },
-    {
-        name: "testInstructions",
-        type: "input",
-        message: "Provide any test instructions for your project:"
-    },
-    {
-        name: "githubUsername",
-        type: "input",
-        message: "Enter your GitHub username:"
-    },
-    {
-        name: "emailAddress",
-        type: "input",
-        message: "Enter your email address:"
-    },
-    {
-        name: "license",
-        type: "list",
-        message: "Choose a license for your project:",
-        choices: ["GNU AGPLv3", "Mozilla Public License 2.0", "Apache License 2.0", "MIT License", "Boost Software License 1.0", "The Unlicense"]
-    }
+const fs = require("fs").promises;
+const inquirer = require("inquirer");
+const createMarkdown = require("./utils/generateMarkdown");
+
+const questions = [
+    { name: "projectTitle", type: "input", message: "Project title:" },
+    { name: "projectDescription", type: "input", message: "Project description:" },
+    { name: "installInstructions", type: "input", message: "Installation instructions:" },
+    { name: "usageInfo", type: "input", message: "Usage information:" },
+    { name: "contributionGuidelines", type: "input", message: "Contribution guidelines:" },
+    { name: "testInstructions", type: "input", message: "Test instructions:" },
+    { name: "githubUsername", type: "input", message: "GitHub username:" },
+    { name: "emailAddress", type: "input", message: "Email address:" },
+    { name: "license", type: "list", message: "Project license:", choices: ["GNU AGPLv3", "Mozilla Public License 2.0", "Apache License 2.0", "MIT License", "Boost Software License 1.0", "The Unlicense"] },
 ];
 
-function generateReadmeFile(fileName, content) {
-    fs.writeFile(fileName, content, err => {
-        if (err) {
-            return console.error(err);
-        }
-        console.log("Successfully created README.md!");
-    });
-}
-
-async function startGenerator() {
+async function init() {
+    console.log("Please fill in your project details to generate a README file.");
     try {
-        const answers = await inquirer.prompt(promptQuestions);
-        const readmeContent = generateReadme(answers);
-        generateReadmeFile("./output/readme.md", readmeContent);
-    } catch (error) {
-        console.error("An error occurred during README generation: ", error);
+        const responses = await inquirer.prompt(questions);
+        const markdownContent = createMarkdown(responses);
+        await fs.writeFile("./output/README.md", markdownContent);
+        console.log("README.md has been successfully generated in the 'output' folder.");
+    } catch (err) {
+        console.error("Error generating README.md:", err);
     }
 }
 
-startGenerator();
+init();
+
+module.exports = createMarkdown;

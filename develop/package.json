@@ -1,6 +1,14 @@
 {
-    "name": "readme-generator",
-    "dependencies": {
-      "inquirer": "^8.2.4"
-    }
-  }
+  "name": "readme-generator",
+  "version": "1.0.0",
+  "description": "A Node.js command-line application to generate project README files",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "inquirer": "^8.2.4"
+  },
+  "license": "MIT"
+}
+
